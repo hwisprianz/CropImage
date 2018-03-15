@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Uri imageUri = Uri.fromFile(imageFile);
         Log.i("CropView", "onCreate: uri = " + imageUri);
-        final CropHead cropView = findViewById(R.id.crop_view);
+        final CropImage cropView = findViewById(R.id.crop_view);
         cropView.setSrcImage(imageFile);
 
 

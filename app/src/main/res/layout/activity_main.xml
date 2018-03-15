@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:text="LOAD" />
 
-    <cn.z.cropimage.CropHead
+    <cn.z.cropimage.CropImage
         android:id="@+id/crop_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
