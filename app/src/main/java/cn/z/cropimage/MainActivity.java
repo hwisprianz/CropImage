@@ -1,74 +1,88 @@
 package cn.z.cropimage;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private ImageView mIvResult;
+    private Button mBtLoadOther;
+    private Button mBtCrop;
+    private CropImageView mCiv;
+
+    private File mResultFile;
+    private String[] mAssetsFile;
+    private int mAssetsFileIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        int a = 175;
-        double b = 0.15891125f;
-        a -= b;
-        Log.i("CropView", "onCreate: a = " + a);
+        findView();
+        mAssetsFile = new String[]{"image.jpg", "square0.png", "square1.png", "square2.png"};
+        mAssetsFileIndex = 0;
+        setViewClickListener();
+        load();
+    }
 
+    private void findView() {
+        mIvResult = findViewById(R.id.iv_result);
+        mBtLoadOther = findViewById(R.id.bt_load);
+        mBtCrop = findViewById(R.id.bt_crop);
+        mCiv = findViewById(R.id.civ_crop);
+    }
 
-        //File imageFile = new File(System.getenv("EXTERNAL_STORAGE"), "t.png");
-        //File imageFile = new File(System.getenv("EXTERNAL_STORAGE"), "image.jpg");
-        //File imageFile = new File(System.getenv("EXTERNAL_STORAGE"), "Square.png");
-        final File imageFile = new File(getCacheDir(), "temp");
+    private void setViewClickListener() {
+        mBtLoadOther.setOnClickListener(this);
+        mBtCrop.setOnClickListener(this);
+    }
+
+    private void load() {
+        if (mAssetsFileIndex < 3) {
+            mAssetsFileIndex += 1;
+        } else {
+            mAssetsFileIndex = 0;
+        }
         try {
-            InputStream is = getAssets().open("square0.png");
-            //InputStream is = getAssets().open("image.jpg");
-            OutputStream os = new FileOutputStream(imageFile);
-            int byteRead = 0;
-            byte[] buffer = new byte[1024];
-            while ((byteRead = is.read(buffer, 0, 1024)) != -1) {
-                os.write(buffer, 0, byteRead);
-            }
+            mCiv.setSrcImage(getAssets().open(mAssetsFile[mAssetsFileIndex]));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Uri imageUri = Uri.fromFile(imageFile);
-        Log.i("CropView", "onCreate: uri = " + imageUri);
-        final CropImage cropView = findViewById(R.id.crop_view);
-        cropView.setSrcImage(imageFile);
-
-
-        final File resultFile = new File(getCacheDir(), "headCrop.png");
-
-        findViewById(R.id.crop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cropView.crop(resultFile, 100);
-            }
-        });
-
-        findViewById(R.id.load).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    cropView.setSrcImage(getAssets().open("square2.png"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
 
     }
 
+    private void cropAndShow() {
+        if (mResultFile == null) {
+            mResultFile = new File(getCacheDir(), "crop.png");
+        }
+        mCiv.crop(mResultFile, 100);
+        Bitmap cropBitmap = BitmapFactory.decodeFile(mResultFile.getPath());
+        if (cropBitmap != null) {
+            mCiv.invalidate();
+            //mIvResult.setImageBitmap(cropBitmap);
+            ((ImageView) findViewById(R.id.iv_result)).setImageBitmap(cropBitmap);
+            new ImageView(this).setImageBitmap(cropBitmap);
+        }
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.bt_load:
+                load();
+                break;
+            case R.id.bt_crop:
+                cropAndShow();
+                break;
+        }
+    }
 }

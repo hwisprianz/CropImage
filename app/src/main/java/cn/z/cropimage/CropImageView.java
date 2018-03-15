@@ -35,7 +35,7 @@ import java.io.InputStream;
  * Created by z
  * on 2018/3/6 0006.
  */
-public class CropImage extends View {
+public class CropImageView extends View {
 
     @SuppressWarnings("all")
     private final String TAG = "CropView";
@@ -74,15 +74,15 @@ public class CropImage extends View {
     private Point mLastTouchPoint = new Point();    //上一次的触控点位置,用于单点触控拖拽
     private float mLastDoubleTouchPointDistance;    //上一次的两个触控点距离,用于两点触控缩放
 
-    public CropImage(Context context) {
+    public CropImageView(Context context) {
         super(context);
     }
 
-    public CropImage(Context context, @Nullable AttributeSet attrs) {
+    public CropImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CropImage(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CropImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -379,6 +379,7 @@ public class CropImage extends View {
      *
      * @param maskColor 遮罩颜色 ARGB
      */
+    @SuppressWarnings("unused")
     public void setMaskColor(int maskColor) {
         this.mMaskColor = maskColor;
         invalidate();
@@ -389,6 +390,7 @@ public class CropImage extends View {
      *
      * @param quality 预览质量;0-1
      */
+    @SuppressWarnings("unused")
     public void setPreviewQuality(float quality) {
         this.mDisplayScale = (float) (0.1 + (quality * 0.9));
     }

@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cn.z.cropimage.MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="cn.z.cropimage.MainActivity">
 
-    <Button
-        android:id="@+id/crop"
+    <RelativeLayout
+        android:id="@+id/top_rl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CROP" />
+        android:layout_height="100dp">
 
-    <Button
-        android:id="@+id/load"
+        <ImageView
+            android:id="@+id/iv_result"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:id="@+id/v_div"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true" />
+
+        <Button
+            android:id="@+id/bt_load"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/v_div"
+            android:text="LOAD OTHER"
+            android:layout_toEndOf="@id/iv_result" />
+
+        <Button
+            android:id="@+id/bt_crop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/v_div"
+            android:text="CROP"
+            android:layout_toEndOf="@id/iv_result" />
+
+    </RelativeLayout>
+
+    <cn.z.cropimage.CropImageView
+        android:id="@+id/civ_crop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="LOAD" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/top_rl" />
 
-    <cn.z.cropimage.CropImage
-        android:id="@+id/crop_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+</RelativeLayout>
